@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    >
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/messages_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginBottom="56dp"
+      />
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:layout_gravity="bottom"
+      android:background="#333"
+      >
+
+    <ImageView
+        android:id="@+id/action_select_image"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        app:srcCompat="@drawable/ic_attach_file_black_24dp"
+        />
+
+    <EditText
+        android:id="@+id/input_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:gravity="center_vertical"
+        android:hint="Enter message..."
+        android:imeOptions="actionSend"
+        android:textColor="#e9c166"
+        android:textColorHint="#b4a179"
+        style="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <ImageView
+        android:id="@+id/action_send_message"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="right"
+        android:padding="16dp"
+        app:srcCompat="@drawable/ic_send_black_24dp"
+        />
+
+  </FrameLayout>
+
+</FrameLayout>
