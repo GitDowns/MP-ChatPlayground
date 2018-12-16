@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             new AlertDialog.Builder(v.getContext(), R.style.Theme_AppCompat_Dialog)
                 .setCancelable(true)
                 .setView(container)
-                .setTitle("Attach image")
+                .setTitle("Attach image:")
                 .create();
 
         pendingDisplayedDialog.show();
