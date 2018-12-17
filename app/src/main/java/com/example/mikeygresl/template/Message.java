@@ -26,7 +26,13 @@ public class Message {
         this.URL = URL;
     }
 
-    public Message() {}
+    public Message() {
+
+//        Long tsLong = System.currentTimeMillis() / 1000;
+//        this.timestamp = tsLong.toString();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        this.timestamp = simpleDateFormat.format(new Date());
+    }
 
     public void setMID(String MID) {
         this.MID = MID;

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -55,6 +56,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener, Vie
     private ImageView action_select_image;              //btn to attach image
 
     private FirebaseAuth authentication;
+    private FirebaseUser currentFBUser;
     private DatabaseReference dbref;
     private DatabaseReference chatsRef;                 //reference to chats db to write messages
 
@@ -69,20 +71,20 @@ public class Chat extends AppCompatActivity implements View.OnClickListener, Vie
         super.onCreate(savedInstanceState);
 
         //no idea what it is
-        Picasso.setSingletonInstance(new Picasso.Builder(this)
-                .loggingEnabled(true)
-                .build());
-
         setContentView(R.layout.activity_chat);
 
         initLayout();
         initFirebase();
 
+//        Picasso.setSingletonInstance(new Picasso.Builder(this)
+//                .loggingEnabled(true)
+//                .build());
+
         //get information about sender and receiver
-//        Intent chatIntent = getIntent();
-//        CID = chatIntent.getStringExtra("CID");
-//        sender_id = chatIntent.getStringExtra("sender_id");
-//        rec_id = chatIntent.getStringExtra("rec_id");
+        Intent chatIntent = getIntent();
+        CID = chatIntent.getStringExtra("CID");
+        sender_id = chatIntent.getStringExtra("sender_UID");
+        rec_id = chatIntent.getStringExtra("rec_UID");
 //        final String[] MIDs = chatIntent.getStringArrayExtra("MIDs");
 //        final String[] timestamps = chatIntent.getStringArrayExtra("timestamps");
 //        final String[] types = chatIntent.getStringArrayExtra("types");
@@ -149,19 +151,24 @@ public class Chat extends AppCompatActivity implements View.OnClickListener, Vie
 
         final String text = messageEditText.getText().toString();
 
-////        chatsRef.push().setValue(CID);
-////        String MID = chatsRef.child(CID).push().getKey();
-////        Message message = new Message();
-////        message.setMID(MID);
-////        message.setType("text");
-////        message.setSender_id(sender_id);
-////        message.setRec_id(rec_id);
-////        message.setContent(text);
-////        message.setURL(imageUrl);
-////        messagesAdapter.addMessage(message);
-//
-//        chatsRef.child(CID).setValue(Message.class);
-        messagesAdapter.addMessage(new Message("Some MID", "text", "", "", text, imageUrl));
+//        chatsRef.child(CID).setValue(true);
+        String MID = chatsRef.child(CID).push().getKey();
+        Message message = new Message();
+        message.setMID(MID);
+        message.setType("text");
+        message.setSender_id(sender_id);
+        message.setRec_id(rec_id);
+        message.setContent(text);
+        message.setURL(imageUrl);
+        messagesAdapter.addMessage(message);
+
+        chatsRef.child(CID).child(MID).child("MID").setValue(message.getMID());
+        chatsRef.child(CID).child(MID).child("type").setValue(message.getType());
+        chatsRef.child(CID).child(MID).child("sender_id").setValue(message.getSender_id());
+        chatsRef.child(CID).child(MID).child("rec_id").setValue(message.getRec_id());
+        chatsRef.child(CID).child(MID).child("timestamp").setValue(message.getTimestamp());
+        chatsRef.child(CID).child(MID).child("content").setValue(message.getContent());
+        chatsRef.child(CID).child(MID).child("url").setValue(message.getURL());
 
         messageEditText.setText(null);
         messagesRecyclerView.scrollToPosition(messagesAdapter.getItemCount() - 1);
@@ -219,9 +226,14 @@ public class Chat extends AppCompatActivity implements View.OnClickListener, Vie
     private void initFirebase() {
 
         authentication = FirebaseAuth.getInstance();
+        currentFBUser = authentication.getCurrentUser();
         dbref = FirebaseDatabase.getInstance().getReference();
         chatsRef = dbref.child("chats");
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }
 

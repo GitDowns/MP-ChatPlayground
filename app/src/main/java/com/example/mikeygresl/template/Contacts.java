@@ -358,11 +358,12 @@ public class Contacts extends AppCompatActivity implements View.OnClickListener 
         }
 
         chatIntent.putExtra("CID", CID);
-        chatIntent.putExtra("sender_email", currentUser.getEmail());
-        chatIntent.putExtra("rec_email", contacts.get(adapterPosition).getEmail());
+        chatIntent.putExtra("sender_UID", currentUser.getUID());
+        chatIntent.putExtra("rec_UID", contacts.get(adapterPosition).getUID());
 
         //retrieve rec_id
-
+        //finish();
         startActivity(chatIntent);
+
     }
 }
