@@ -17,9 +17,8 @@ public class User extends Contact{
         super(UID, email, fname, lname);
     }
 
-    public void loadChats(Conversation chat) {
-
-        this.chats.add(chat);
+    public void setChats(List<Conversation> chats) {
+        this.chats = chats;
     }
 
     public List<Conversation> getChats() { return chats; }

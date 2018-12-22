@@ -1,37 +1,49 @@
 package com.example.mikeygresl.template;
 
+import android.os.Parcel;
 import android.text.TextUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Message {
 
     private String MID;
-    private String timestamp;
+    private long timestamp;
     private String type;
-    private String sender_id;
-    private String rec_id;
-    private CharSequence content;
+    private String sender_email;
+    private String rec_email;
+    private String content;
     private String URL;
+    private String sender_id;
 
-    public Message(String MID, String type, String sender_id, String rec_id, CharSequence content, String URL) {
+    public Message(String MID, long timestamp, String type, String sender_email, String rec_email, String content, String URL) {
         this.MID = MID;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        this.timestamp = simpleDateFormat.format(new Date());
         this.type = type;
-        this.sender_id = sender_id;
-        this.rec_id = rec_id;
+        this.sender_email = sender_email;
+        this.rec_email = rec_email;
         this.content = content;
         this.URL = URL;
+
+        setTimestamp(timestamp);
     }
 
     public Message() {
 
 //        Long tsLong = System.currentTimeMillis() / 1000;
 //        this.timestamp = tsLong.toString();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        this.timestamp = simpleDateFormat.format(new Date());
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    protected Message(Parcel in) {
+        MID = in.readString();
+        timestamp = in.readLong();
+        type = in.readString();
+        sender_email = in.readString();
+        rec_email = in.readString();
+        content = in.readString();
+        URL = in.readString();
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setMID(String MID) {
@@ -42,11 +54,11 @@ public class Message {
         this.type = type;
     }
 
-    public void setSender_id(String sender_id) {
-        this.sender_id = sender_id;
+    public void setSender_email(String sender_email) {
+        this.sender_email = sender_email;
     }
 
-    public void setContent(CharSequence content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
@@ -59,16 +71,24 @@ public class Message {
         return MID;
     }
 
-    public void setRec_id(String rec_id) {
-        this.rec_id = rec_id;
+    public void setRec_email(String rec_email) {
+        this.rec_email = rec_email;
     }
 
-    public String getRec_id() {
+    public String getRec_email() {
 
-        return rec_id;
+        return rec_email;
     }
 
-    public String getTimestamp() {
+    public String getSender_id() {
+        return sender_id;
+    }
+
+    public void setSender_id(String sender_id) {
+        this.sender_id = sender_id;
+    }
+
+    public long getTimestamp() {
         return timestamp;
     }
 
@@ -76,11 +96,11 @@ public class Message {
         return type;
     }
 
-    public String getSender_id() {
-        return sender_id;
+    public String getSender_email() {
+        return sender_email;
     }
 
-    public CharSequence getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -89,7 +109,6 @@ public class Message {
     }
 
     public boolean hasImage() {
-
         return !TextUtils.isEmpty(getURL());
     }
 }

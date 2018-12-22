@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -16,16 +17,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     private View.OnClickListener onContactClickListtener;
 
     public ContactsAdapter(List<Contact> contactItemList) {
-
         this.contactItemList = contactItemList;
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
-
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item, viewGroup, false);
-
         return new ContactViewHolder(itemView);
     }
 
@@ -44,8 +42,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder contactViewHolder, int i) {
-        contactViewHolder.fullnameTextView.setText(contactItemList.get(i).getFname() + " " + contactItemList.get(i).getLname());
-        contactViewHolder.emailTextView.setText(contactItemList.get(i).getEmail());
+        final Contact contact = contactItemList.get(i);
+
+        contactViewHolder.fullnameTextView.setText(contact.getFname() + " " + contact.getLname());
+        contactViewHolder.emailTextView.setText(contact.getEmail());
+
+        contactViewHolder.avatar().setInfo(contact.getUID(), contact.getFname(), contact.getLname());
+        contactViewHolder.avatar().invalidateSelf();
     }
 
     @Override
@@ -54,7 +57,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     }
 
     public void setOnContactClickListener(View.OnClickListener listener) {
-
         onContactClickListtener = listener;
     }
 
@@ -62,11 +64,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         private TextView fullnameTextView;
         private TextView emailTextView;
+        private ImageView imageView;
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
-            fullnameTextView = (TextView)itemView.findViewById(R.id.fullnameTextView);
-            emailTextView = (TextView)itemView.findViewById(R.id.emailTextView);
+
+            final AvatarDrawable avatarDrawable = new AvatarDrawable(itemView.getContext());
+            avatarDrawable.setInfo("Test", "Unknown", "User");
+
+            imageView = itemView.findViewById(R.id.avatar);
+            imageView.setImageDrawable(avatarDrawable);
+
+            fullnameTextView = itemView.findViewById(R.id.fullnameTextView);
+            emailTextView = itemView.findViewById(R.id.emailTextView);
+        }
+
+        public AvatarDrawable avatar(){
+            return (AvatarDrawable) imageView.getDrawable();
         }
     }
 }

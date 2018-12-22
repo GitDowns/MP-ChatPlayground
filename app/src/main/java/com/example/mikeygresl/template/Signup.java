@@ -1,9 +1,9 @@
 package com.example.mikeygresl.template;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
 //class for registration
 
 public class Signup extends AppCompatActivity {
@@ -34,7 +32,8 @@ public class Signup extends AppCompatActivity {
     private EditText fnameEditText;
     private EditText lnameEditText;
     private Button singupButton;
-    private TextView singinTextView;
+    private FloatingActionButton singinFab;
+    private TextView signupTxt;
 
     private String UID;
     private String email;
@@ -72,11 +71,11 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-        singinTextView.setOnClickListener(new View.OnClickListener() {
+        singinFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 finish();
                 startActivity(intent);
             }
@@ -134,13 +133,27 @@ public class Signup extends AppCompatActivity {
     //initialize xml layout elements
     private void initLayout() {
 
-        emailEditText = (EditText)findViewById(R.id.emailEditText);
-        passwordEditText = (EditText)findViewById(R.id.passwordEditText);
-        fnameEditText = (EditText)findViewById(R.id.fnameEditText);
-        lnameEditText = (EditText)findViewById(R.id.lnameEditText);
-        singinTextView = (TextView)findViewById(R.id.signupTextView);
-        singupButton = (Button)findViewById(R.id.signupButton);
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        fnameEditText = findViewById(R.id.fnameEditText);
+        lnameEditText = findViewById(R.id.lnameEditText);
+        singinFab = findViewById(R.id.signInFab);
+        singupButton = findViewById(R.id.signupButton);
+        signupTxt = findViewById(R.id.signupText);
+
+        Typeface avenir = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextCyr-Bold.ttf");
+        signupTxt.setTypeface(avenir);
+
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        usersRef = null;
+        contactsRef = null;
+        dbref = null;
+        authentication = null;
+    }
 
 }

@@ -2,58 +2,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:orientation="vertical"
     tools:context=".Contacts">
 
-    <LinearLayout
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:minHeight="?attr/actionBarSize"-->
+        <!--app:titleTextColor="@android:color/black"-->
+        <!--android:background="?attr/colorPrimaryDark">-->
+
+    <!--</android.support.v7.widget.Toolbar>-->
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <EditText
-            android:id="@+id/searchEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Type email of new contact"/>
-
-        <Button
-            android:id="@+id/addContactBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/contacts_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:orientation="vertical">
+        android:visibility="gone"
+        android:layout_height="55dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contacts"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:text="@string/chats"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#111"
-            android:textSize="26dp"/>
+            android:textColor="#000"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/contactsRecyclerView"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#B1B1B1"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/addContact"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="40dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_search_box"
+            android:hint="@string/search_for_users"
+            android:focusedByDefault="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/searchBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_search_icon_ios" />
+
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contactsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        android:padding="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:overScrollMode="always"
+        />
+
 
 </LinearLayout>

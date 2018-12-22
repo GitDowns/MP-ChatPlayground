@@ -1,13 +1,14 @@
 package com.example.mikeygresl.template;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,27 +18,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //class for login
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private final static String TAG = "Main Activity";
+
 
     //layout elements
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button signinButton;
-    private TextView signupLink;
+    private FloatingActionButton signupFab;
+    private TextView singInText;
 
     //signin input elements
     private String email;
@@ -52,10 +48,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         initLayout();
         authentication = FirebaseAuth.getInstance();
+
+        if (authentication.getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), Contacts.class));
+            finish();
+            return;
+        }
 
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,9 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (email.isEmpty() || password.isEmpty()) {        //check for empty fields
 
-                    Toast.makeText(getApplicationContext(), "Empty Fields!", Toast.LENGTH_SHORT);
-                }
-                else {
+                    Toast.makeText(getApplicationContext(), "Empty Fields!", Toast.LENGTH_SHORT).show();
+                } else {
                     signIn(email, password);
                 }
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //link to singup if user doesn't have an account yet
-        signupLink.setOnClickListener(new View.OnClickListener() {
+        signupFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -101,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                     finish();
                     startActivity(new Intent(getApplicationContext(), Contacts.class));
-                }
-                else {
+                } else {
 
                     if (task.isSuccessful()) {
 
@@ -110,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Contacts.class);
                         finish();
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
 
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed.",
@@ -132,6 +131,16 @@ public class MainActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         signinButton = findViewById(R.id.signupButton);
-        signupLink = findViewById(R.id.signupTextView);
+        signupFab = findViewById(R.id.signUpFab);
+        singInText = findViewById(R.id.singInTxt);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextCyr-Bold.ttf");
+        singInText.setTypeface(typeface);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        authentication = null;
     }
 }
