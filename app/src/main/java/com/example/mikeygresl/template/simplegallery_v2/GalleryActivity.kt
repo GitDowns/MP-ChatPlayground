@@ -94,6 +94,7 @@ class GalleryActivity : AppCompatActivity() {
         minHeight = dp(56f)
         textSize = 14f
         typeface = Typeface.MONOSPACE
+        inputType = EditorInfo.TYPE_CLASS_TEXT
         imeOptions = EditorInfo.IME_ACTION_SEARCH
 
         val padding = dp(8f)
